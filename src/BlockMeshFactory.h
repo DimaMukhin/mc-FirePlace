@@ -6,6 +6,5 @@
 #include <glm/glm.hpp>
 
 namespace block {
-	Mesh* createBlockMesh();
+	Mesh* createBlockMesh(glm::vec4 color);
 }
-

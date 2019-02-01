@@ -19,13 +19,12 @@ const char *WINDOW_TITLE = "Question 2";
 const double FRAME_RATE_MS = 1000.0/60.0;
 
 GLuint projectionUniformLocation, viewUniformLocation, modelUniformLocation;
-Mesh *blockMesh;
+Mesh *greenBlockMesh, *redBlockMesh;
 
 //----------------------------------------------------------------------------
 
 // OpenGL initialization
-void
-init()
+void init()
 {
     // Load shaders and use the resulting shader program
     GLuint program = InitShader( "vshader.glsl", "fshader.glsl" );
@@ -47,8 +46,11 @@ init()
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
 
-	blockMesh = block::createBlockMesh();
-	blockMesh->init(vPosition, vColor);
+	greenBlockMesh = block::createBlockMesh(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	greenBlockMesh->init(vPosition, vColor);
+
+	redBlockMesh = block::createBlockMesh(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	redBlockMesh->init(vPosition, vColor);
 
     glEnable( GL_DEPTH_TEST );
     glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
@@ -56,28 +58,49 @@ init()
 
 //----------------------------------------------------------------------------
 
-void
-display( void )
+GLfloat angle = 0.0f;
+void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	glm::mat4 model;
+	// fireplace
 
-	model = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, 0.5f));
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
-	blockMesh->display();
+	for (GLfloat angle = 0.0f; angle < 360.0f; angle += 60.0f) {
+		glm::mat4 stickmodel;
+		stickmodel = glm::scale(stickmodel, glm::vec3(0.25f, 0.25f, 0.25f));
+		stickmodel = glm::rotate(stickmodel, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	model = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, 0.5f));
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
-	blockMesh->display();
+		stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.5f, 0.0f));
+		glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(stickmodel));
+		redBlockMesh->display();
 
-	model = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, -0.5f));
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
-	blockMesh->display();
+		stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(stickmodel));
+		redBlockMesh->display();
 
-	model = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, -0.5f));
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
-	blockMesh->display();
+		stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(stickmodel));
+		redBlockMesh->display();
+	}
+
+	// floor
+	glm::mat4 floorModel;
+
+	floorModel = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, 0.5f));
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
+	greenBlockMesh->display();
+
+	floorModel = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, 0.5f));
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
+	greenBlockMesh->display();
+
+	floorModel = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, -0.5f));
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
+	greenBlockMesh->display();
+
+	floorModel = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, -0.5f));
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
+	greenBlockMesh->display();
 
     glutSwapBuffers();
 }
@@ -97,8 +120,7 @@ keyboard( unsigned char key, int x, int y )
 
 //----------------------------------------------------------------------------
 
-void
-mouse( int button, int state, int x, int y )
+void mouse( int button, int state, int x, int y )
 {
     if ( state == GLUT_DOWN ) {
     }
@@ -106,16 +128,13 @@ mouse( int button, int state, int x, int y )
 
 //----------------------------------------------------------------------------
 
-void
-update( void )
+void update( void )
 {
-    
 }
 
 //----------------------------------------------------------------------------
 
-void
-reshape( int width, int height )
+void reshape( int width, int height )
 {
 	GLfloat aspect = GLfloat(width) / height;
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspect, 0.5f, 100.0f);

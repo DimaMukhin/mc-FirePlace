@@ -49,6 +49,19 @@ namespace block {
 		return generatedColors;
 	}
 
+	glm::vec4 * generateColors(glm::vec4 color, int numOfColors)
+	{
+		glm::vec4 *generatedColors = new glm::vec4[numOfColors];
+
+		for (int i = 0; i < numOfColors; i++)
+		{
+
+			generatedColors[i] = color;
+		}
+
+		return generatedColors;
+	}
+
 	glm::vec4 * generateVertices(int * vertices, int numOfVertices)
 	{
 		glm::vec4 *generatedVertices = new glm::vec4[numOfVertices];
@@ -62,10 +75,10 @@ namespace block {
 		return generatedVertices;
 	}
 
-	Mesh* createBlockMesh()
+	Mesh* createBlockMesh(glm::vec4 color)
 	{
 		glm::vec4 *vertices = generateVertices(vertexIndices, numOfVertices);
-		glm::vec4 *colors = generateColors(colorIndices, numOfVertices);
+		glm::vec4 *colors = generateColors(color, numOfVertices);
 		return new Mesh(vertices, colors, numOfVertices);
 	}
 }
