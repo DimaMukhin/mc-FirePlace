@@ -1,9 +1,11 @@
 #version 150
 
-in  vec4 color;
+flat in vec4 colorIntensity;
 out vec4 fColor;
+
+uniform vec4 baseColor;
 
 void main() 
 { 
-    fColor = color;
+    fColor = baseColor + colorIntensity;
 }

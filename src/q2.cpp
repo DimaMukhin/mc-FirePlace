@@ -23,7 +23,7 @@
 const char *WINDOW_TITLE = "Question 2";
 const double FRAME_RATE_MS = 1000.0/60.0;
 
-GLuint projectionUniformLocation, viewUniformLocation, modelUniformLocation;
+GLuint projectionUniformLocation, viewUniformLocation, modelUniformLocation, baseColorUniformLocation;
 Mesh *greenBlockMesh, *redBlockMesh;
 Mesh2 *subdividedSquare;
 FireParticleSystem *fireParticleSystem;
@@ -42,11 +42,12 @@ void init()
 
     // set up vertex arrays
     GLuint vPosition = glGetAttribLocation( program, "vPosition" );
-    GLuint vColor = glGetAttribLocation( program, "vColor" ); 
+    GLuint vColorIntensity = glGetAttribLocation( program, "vColorIntensity" );
 
 	projectionUniformLocation = glGetUniformLocation(program, "projection");
 	viewUniformLocation = glGetUniformLocation(program, "view");
 	modelUniformLocation = glGetUniformLocation(program, "model");
+	baseColorUniformLocation = glGetUniformLocation(program, "baseColor");
 
 	// setting default value for model transformation so we dont get junk if we forget to set it
 	glm::mat4 uniform;
@@ -55,6 +56,10 @@ void init()
 	// setting default view transformation
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+	// setting default base color
+	glm::vec4 defaultBaseColor = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(defaultBaseColor));
 
 	/*greenBlockMesh = block::createBlockMesh(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	greenBlockMesh->init(vPosition, vColor);
@@ -97,63 +102,63 @@ void init()
 		glm::vec4(0.5f, 0.0f, -0.5f, 1.0f),
 	};
 
-	glm::vec4 *colors = new glm::vec4[numOfVertices] {
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
+	glm::vec4 *colorIntensities = new glm::vec4[numOfVertices] {
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
+		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
+		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
+		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
+		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
+		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+		glm::vec4(0.4f, 0.4f, 0.4f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
+		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
+		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+		glm::vec4(0.4f, 0.4f, 0.4f, 1.0f),
+		glm::vec4(0.5f, 0.5f, 0.5f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
+		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
+		glm::vec4(0.4f, 0.4f, 0.4f, 1.0f),
+		glm::vec4(0.5f, 0.5f, 0.5f, 1.0f),
+		glm::vec4(0.6f, 0.6f, 0.6f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
-		glm::vec4(1.0f, 1.0f, 0.5f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 	};
 
 	GLuint numOfIndices = 6 * 16;
 	GLuint *indices = new GLuint[numOfIndices] {
-		0, 1, 6, 6, 5, 0,
-		1, 2, 7, 7, 6, 1,
-		2, 3, 8, 8, 7, 2,
-		3, 4, 9, 9, 8, 3,
+		1, 6, 0, 6, 5, 0,
+		2, 7, 1, 7, 6, 1,
+		3, 8, 2, 8, 7, 2,
+		4, 9, 3, 9, 8, 3,
 
-		5, 6, 11, 11, 10, 5,
-		6, 7, 12, 12, 11, 6,
-		7, 8, 13, 13, 12, 7,
-		8, 9, 14, 14, 13, 8,
+		6, 11, 5, 11, 10, 5,
+		7, 12, 6, 12, 11, 6,
+		8, 13, 7, 13, 12, 7,
+		9, 14, 8, 14, 13, 8,
 
-		10, 11, 16, 16, 15, 10,
-		11, 12, 17, 17, 16, 11,
-		12, 13, 18, 18, 17, 12,
-		13, 14, 19, 19, 18, 13,
+		11, 16, 10, 16, 15, 10,
+		12, 17, 11, 17, 16, 11,
+		13, 18, 12, 18, 17, 12,
+		14, 19, 13, 19, 18, 13,
 
-		15, 16, 21, 21, 20, 15,
-		16, 17, 22, 22, 21, 16,
-		17, 18, 23, 23, 22, 17,
-		18, 19, 24, 24, 23, 18,
+		16, 21, 15, 21, 20, 15,
+		17, 22, 16, 22, 21, 16,
+		18, 23, 17, 23, 22, 17,
+		19, 24, 18, 24, 23, 18,
 	};
 
-	subdividedSquare = new Mesh2(vertices, colors, numOfVertices, indices, numOfIndices);
-	subdividedSquare->init(vPosition, vColor);
+	subdividedSquare = new Mesh2(vertices, colorIntensities, numOfVertices, indices, numOfIndices);
+	subdividedSquare->init(vPosition, vColorIntensity);
 
     glEnable( GL_DEPTH_TEST );
     glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
