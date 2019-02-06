@@ -156,6 +156,7 @@
     <ClInclude Include="..\src\FireParticle.h" />
     <ClInclude Include="..\src\FireParticleSystem.h" />
     <ClInclude Include="..\src\Mesh.h" />
+    <ClInclude Include="..\src\Mesh2.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -165,6 +166,7 @@
     <ClCompile Include="..\src\FireParticleSystem.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Mesh.cpp" />
+    <ClCompile Include="..\src\Mesh2.cpp" />
     <ClCompile Include="..\src\q2.cpp" />
   </ItemGroup>
   <ItemGroup>
