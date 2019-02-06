@@ -8,10 +8,8 @@
 //   as the default projetion.
 
 #include "common.h"
-#include "Mesh.h"
 #include "Mesh2.h"
-#include "BlockMeshFactory.h"
-#include "FireParticle.h"
+#include "MineCraftBlock.h"
 #include "FireParticleSystem.h"
 
 #include <time.h>
@@ -24,9 +22,8 @@ const char *WINDOW_TITLE = "Question 2";
 const double FRAME_RATE_MS = 1000.0/60.0;
 
 GLuint projectionUniformLocation, viewUniformLocation, modelUniformLocation, baseColorUniformLocation;
-Mesh *greenBlockMesh, *redBlockMesh;
-Mesh2 *subdividedSquare;
-FireParticleSystem *fireParticleSystem;
+MineCraftBlock *mcBlock;
+FireParticleSystem *fpSystem;
 
 //----------------------------------------------------------------------------
 
@@ -61,104 +58,10 @@ void init()
 	glm::vec4 defaultBaseColor = glm::vec4(0.1f, 0.4f, 0.1f, 1.0f);
 	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(defaultBaseColor));
 
-	/*greenBlockMesh = block::createBlockMesh(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	greenBlockMesh->init(vPosition, vColor);
+	mcBlock = new MineCraftBlock(modelUniformLocation);
+	mcBlock->init(vPosition, vColorIntensity);
 
-	redBlockMesh = block::createBlockMesh(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	redBlockMesh->init(vPosition, vColor);
-
-	fireParticleSystem = new FireParticleSystem(50, modelUniformLocation, redBlockMesh, glm::vec3(0, 0, 0), vPosition, vColor);*/
-
-	GLuint numOfVertices = 25;
-	glm::vec4 *vertices = new glm::vec4[numOfVertices] {
-		glm::vec4(-0.5f, 0.0f, 0.5f, 1.0f),
-		glm::vec4(-0.25f, 0.0f, 0.5f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.5f, 1.0f),
-		glm::vec4(0.25f, 0.0f, 0.5f, 1.0f),
-		glm::vec4(0.5f, 0.0f, 0.5f, 1.0f),
-
-		glm::vec4(-0.5f, 0.0f, 0.25f, 1.0f),
-		glm::vec4(-0.25f, 0.0f, 0.25f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.25f, 1.0f),
-		glm::vec4(0.25f, 0.0f, 0.25f, 1.0f),
-		glm::vec4(0.5f, 0.0f, 0.25f, 1.0f),
-
-		glm::vec4(-0.5f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(-0.25f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.25f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.5f, 0.0f, 0.0f, 1.0f),
-
-		glm::vec4(-0.5f, 0.0f, -0.25f, 1.0f),
-		glm::vec4(-0.25f, 0.0f, -0.25f, 1.0f),
-		glm::vec4(0.0f, 0.0f, -0.25f, 1.0f),
-		glm::vec4(0.25f, 0.0f, -0.25f, 1.0f),
-		glm::vec4(0.5f, 0.0f, -0.25f, 1.0f),
-
-		glm::vec4(-0.5f, 0.0f, -0.5f, 1.0f),
-		glm::vec4(-0.25f, 0.0f, -0.5f, 1.0f),
-		glm::vec4(0.0f, 0.0f, -0.5f, 1.0f),
-		glm::vec4(0.25f, 0.0f, -0.5f, 1.0f),
-		glm::vec4(0.5f, 0.0f, -0.5f, 1.0f),
-	};
-
-	glm::vec4 *colorIntensities = new glm::vec4[numOfVertices] {
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
-		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
-		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-
-		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
-		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
-		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-
-		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
-		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
-		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-
-		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
-		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-	};
-
-	GLuint numOfIndices = 6 * 16;
-	GLuint *indices = new GLuint[numOfIndices] {
-		1, 6, 0, 6, 5, 0,
-		2, 7, 1, 7, 6, 1,
-		3, 8, 2, 8, 7, 2,
-		4, 9, 3, 9, 8, 3,
-
-		6, 11, 5, 11, 10, 5,
-		7, 12, 6, 12, 11, 6,
-		8, 13, 7, 13, 12, 7,
-		9, 14, 8, 14, 13, 8,
-
-		11, 16, 10, 16, 15, 10,
-		12, 17, 11, 17, 16, 11,
-		13, 18, 12, 18, 17, 12,
-		14, 19, 13, 19, 18, 13,
-
-		16, 21, 15, 21, 20, 15,
-		17, 22, 16, 22, 21, 16,
-		18, 23, 17, 23, 22, 17,
-		19, 24, 18, 24, 23, 18,
-	};
-
-	subdividedSquare = new Mesh2(vertices, colorIntensities, numOfVertices, indices, numOfIndices);
-	subdividedSquare->init(vPosition, vColorIntensity);
+	fpSystem = new FireParticleSystem(50, modelUniformLocation, mcBlock, glm::vec3(0, 0, 0), vPosition, vColorIntensity, baseColorUniformLocation);
 
     glEnable( GL_DEPTH_TEST );
     glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
@@ -171,7 +74,9 @@ void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	subdividedSquare->display();
+	//mcBlock->display();
+
+	fpSystem->display();
 
 	//fireParticleSystem->display();
 
@@ -243,6 +148,7 @@ void mouse( int button, int state, int x, int y )
 void update( void )
 {
 	//fireParticleSystem->update();
+	fpSystem->update();
 }
 
 //----------------------------------------------------------------------------

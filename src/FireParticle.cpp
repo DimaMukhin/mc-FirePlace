@@ -5,10 +5,10 @@ GLfloat FireParticle::randBetween(GLfloat hi, GLfloat low)
 	return low + static_cast <GLfloat> (rand()) / (static_cast <GLfloat> (RAND_MAX / (hi - low)));
 }
 
-FireParticle::FireParticle(GLuint modelUniformLocation, Mesh *particleMesh, glm::vec3 location)
+FireParticle::FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock, glm::vec3 location)
 {
 	this->modelUniformLocation = modelUniformLocation;
-	this->particleMesh = particleMesh;
+	this->mcBlock = mcBlock;
 	this->location = location;
 
 	velocity = randBetween(MIN_VELOCITY, MAX_VELOCITY);
@@ -35,16 +35,14 @@ void FireParticle::display()
 	model = glm::rotate(model, glm::radians(angle), axisOfRotation);
 	model = glm::scale(model, glm::vec3(size, size, size));
 
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
-
-	particleMesh->display();
+	mcBlock->display(model);
 
 	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 }
 
-void FireParticle::init(GLuint positionAttribLocation, GLuint colorAttribLocation)
+void FireParticle::init(GLuint positionAttribLocation, GLuint colorIntensityAttribLocation)
 {
-	particleMesh->init(positionAttribLocation, colorAttribLocation);
+	mcBlock->init(positionAttribLocation, colorIntensityAttribLocation);
 }
 
 void FireParticle::update()
@@ -67,6 +65,11 @@ void FireParticle::update()
 bool FireParticle::isDead()
 {
 	return ttl <= 0;
+}
+
+GLfloat FireParticle::getDistance(glm::vec3 startLocation)
+{
+	return glm::length(location - startLocation);
 }
 
 FireParticle::~FireParticle()

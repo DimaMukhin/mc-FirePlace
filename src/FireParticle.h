@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common.h"
-#include "Mesh.h"
+#include "MineCraftBlock.h"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -36,22 +36,24 @@ class FireParticle
 public:
 	static GLfloat randBetween(GLfloat hi, GLfloat low);
 
-	FireParticle(GLuint modelUniformLocation, Mesh *particleMesh, glm::vec3 location);
+	FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock, glm::vec3 location);
 
 	void display();
 
-	void init(GLuint positionAttribLocation, GLuint colorAttribLocation);
+	void init(GLuint positionAttribLocation, GLuint colorIntensityAttribLocation);
 
 	void update();
 
 	bool isDead();
+
+	GLfloat getDistance(glm::vec3 startLocation);
 
 	~FireParticle();
 
 private:
 	GLuint modelUniformLocation;
 	
-	Mesh *particleMesh;
+	MineCraftBlock *mcBlock;
 
 	GLfloat velocity, rotationalVelocity;
 	GLfloat angle;

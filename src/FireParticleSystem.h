@@ -2,14 +2,14 @@
 
 #include "common.h"
 #include "FireParticle.h"
-#include "Mesh.h"
+#include "MineCraftBlock.h"
 
 #include <vector>
 
 class FireParticleSystem
 {
 public:
-	FireParticleSystem(int numOfParticles, GLuint modelUniformLocation, Mesh *particleMesh, glm::vec3 startLocation, GLuint positionAttribLocation, GLuint colorAttribLocation);
+	FireParticleSystem(int numOfParticles, GLuint modelUniformLocation, MineCraftBlock *mcBlock, glm::vec3 startLocation, GLuint positionAttribLocation, GLuint colorIntensityAttribLocation, GLuint baseColorUniformLocation);
 
 	void display();
 
@@ -23,9 +23,12 @@ private:
 
 	GLuint modelUniformLocation;
 	GLuint positionAttribLocation;
-	GLuint colorAttribLocation;
-	Mesh *particleMesh;
+	GLuint colorIntensityAttribLocation;
+	GLuint baseColorUniformLocation;
+	MineCraftBlock *mcBlock;
 	glm::vec3 startLocation;
 
 	FireParticle* createNewParticle();
+
+	glm::vec3 getFireParticleColor(FireParticle *fp);
 };
