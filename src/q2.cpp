@@ -58,7 +58,7 @@ void init()
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
 
 	// setting default base color
-	glm::vec4 defaultBaseColor = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	glm::vec4 defaultBaseColor = glm::vec4(0.1f, 0.4f, 0.1f, 1.0f);
 	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(defaultBaseColor));
 
 	/*greenBlockMesh = block::createBlockMesh(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
@@ -112,19 +112,19 @@ void init()
 		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
 		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.4f, 0.4f, 0.4f, 1.0f),
+		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
 		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 
 		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
 		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.4f, 0.4f, 0.4f, 1.0f),
-		glm::vec4(0.5f, 0.5f, 0.5f, 1.0f),
+		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
+		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 
 		glm::vec4(0.3f, 0.3f, 0.3f, 1.0f),
-		glm::vec4(0.4f, 0.4f, 0.4f, 1.0f),
-		glm::vec4(0.5f, 0.5f, 0.5f, 1.0f),
-		glm::vec4(0.6f, 0.6f, 0.6f, 1.0f),
+		glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),
+		glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
 
 		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
