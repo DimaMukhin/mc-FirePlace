@@ -74,50 +74,41 @@ void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	//mcBlock->display();
-
 	fpSystem->display();
 
-	//fireParticleSystem->display();
+	// fireplace
 
-	//// fireplace
+	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(glm::vec3(0.45f, 0.2f, 0.0f)));
+	for (GLfloat angle = 0.0f; angle < 360.0f; angle += 60.0f) {
+		glm::mat4 stickmodel;
+		stickmodel = glm::scale(stickmodel, glm::vec3(0.25f, 0.25f, 0.25f));
+		stickmodel = glm::rotate(stickmodel, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	//for (GLfloat angle = 0.0f; angle < 360.0f; angle += 60.0f) {
-	//	glm::mat4 stickmodel;
-	//	stickmodel = glm::scale(stickmodel, glm::vec3(0.25f, 0.25f, 0.25f));
-	//	stickmodel = glm::rotate(stickmodel, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+		stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.5f, 0.0f));
+		mcBlock->display(stickmodel);
 
-	//	stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.5f, 0.0f));
-	//	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(stickmodel));
-	//	redBlockMesh->display();
+		stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.0f, 0.0f));
+		mcBlock->display(stickmodel);
 
-	//	stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.0f, 0.0f));
-	//	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(stickmodel));
-	//	redBlockMesh->display();
-
-	//	stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.0f, 0.0f));
-	//	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(stickmodel));
-	//	redBlockMesh->display();
-	//}
+		stickmodel = glm::translate(stickmodel, glm::vec3(-1.0f, 0.0f, 0.0f));
+		mcBlock->display(stickmodel);
+	}
 
 	//// floor
-	//glm::mat4 floorModel;
+	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(glm::vec3(0.1f, 0.4f, 0.0f)));
+	glm::mat4 floorModel;
 
-	//floorModel = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, 0.5f));
-	//glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
-	//greenBlockMesh->display();
+	floorModel = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, 0.5f));
+	mcBlock->display(floorModel);
 
-	//floorModel = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, 0.5f));
-	//glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
-	//greenBlockMesh->display();
+	floorModel = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, 0.5f));
+	mcBlock->display(floorModel);
 
-	//floorModel = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, -0.5f));
-	//glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
-	//greenBlockMesh->display();
+	floorModel = glm::translate(glm::mat4(), glm::vec3(0.5f, -0.5f, -0.5f));
+	mcBlock->display(floorModel);
 
-	//floorModel = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, -0.5f));
-	//glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(floorModel));
-	//greenBlockMesh->display();
+	floorModel = glm::translate(glm::mat4(), glm::vec3(-0.5f, -0.5f, -0.5f));
+	mcBlock->display(floorModel);
 
     glutSwapBuffers();
 }
