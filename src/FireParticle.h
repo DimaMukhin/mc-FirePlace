@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #define MIN_VELOCITY 0.01f
-#define MAX_VELOCITY 0.2f
+#define MAX_VELOCITY 0.1f
 
 #define MIN_ROTATIONAL_VELOCITY 0.3f
 #define MAX_ROTATIONAL_VELOCITY 0.8f
@@ -25,11 +25,11 @@
 #define MIN_Z_AXIS_OF_ROTATION 0.0f
 #define MAX_Z_AXIS_OF_ROTATION 1.0f
 
-#define MIN_SIZE 0.2f
-#define MAX_SIZE 0.4f
+#define MIN_SIZE 0.1f
+#define MAX_SIZE 0.3f
 
 #define MIN_TTL 10.0f
-#define MAX_TTL 50.0f
+#define MAX_TTL 30.0f
 
 class FireParticle
 {

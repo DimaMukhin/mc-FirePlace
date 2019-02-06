@@ -61,10 +61,10 @@ void init()
 	mcBlock = new MineCraftBlock(modelUniformLocation);
 	mcBlock->init(vPosition, vColorIntensity);
 
-	fpSystem = new FireParticleSystem(50, modelUniformLocation, mcBlock, glm::vec3(0, 0, 0), vPosition, vColorIntensity, baseColorUniformLocation);
+	fpSystem = new FireParticleSystem(100, modelUniformLocation, mcBlock, glm::vec3(0, 0, 0), vPosition, vColorIntensity, baseColorUniformLocation);
 
     glEnable( GL_DEPTH_TEST );
-    glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
+    glClearColor( 0.0, 0.0, 0.0, 1.0 ); 
 }
 
 //----------------------------------------------------------------------------
@@ -111,6 +111,7 @@ void display( void )
 	mcBlock->display(floorModel);
 
     glutSwapBuffers();
+	glFinish();
 }
 
 //----------------------------------------------------------------------------
@@ -135,11 +136,19 @@ void mouse( int button, int state, int x, int y )
 }
 
 //----------------------------------------------------------------------------
-
+GLfloat cameraAngleOfRotation = 0.0f;
 void update( void )
 {
-	//fireParticleSystem->update();
 	fpSystem->update();
+
+	// updating camera
+	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 5.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	view = glm::rotate(view, glm::radians(cameraAngleOfRotation), glm::vec3(0.0f, 1.0f, 0.0f));
+	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+	cameraAngleOfRotation += 0.2f;
+	if (cameraAngleOfRotation >= 360.0f)
+		cameraAngleOfRotation = 0.0f;
 }
 
 //----------------------------------------------------------------------------
