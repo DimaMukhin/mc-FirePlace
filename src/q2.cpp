@@ -10,7 +10,11 @@
 #include "common.h"
 #include "Mesh.h"
 #include "BlockMeshFactory.h"
+#include "FireParticle.h"
+#include "FireParticleSystem.h"
 
+#include <time.h>
+#include <stdlib.h> 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -20,12 +24,16 @@ const double FRAME_RATE_MS = 1000.0/60.0;
 
 GLuint projectionUniformLocation, viewUniformLocation, modelUniformLocation;
 Mesh *greenBlockMesh, *redBlockMesh;
+FireParticleSystem *fireParticleSystem;
 
 //----------------------------------------------------------------------------
 
 // OpenGL initialization
 void init()
 {
+	// initializing random number generator
+	srand(static_cast <unsigned> (time(0)));
+
     // Load shaders and use the resulting shader program
     GLuint program = InitShader( "vshader.glsl", "fshader.glsl" );
     glUseProgram( program );
@@ -52,6 +60,8 @@ void init()
 	redBlockMesh = block::createBlockMesh(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	redBlockMesh->init(vPosition, vColor);
 
+	fireParticleSystem = new FireParticleSystem(50, modelUniformLocation, redBlockMesh, glm::vec3(0, 0, 0), vPosition, vColor);
+
     glEnable( GL_DEPTH_TEST );
     glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
 }
@@ -62,6 +72,8 @@ GLfloat angle = 0.0f;
 void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+	fireParticleSystem->display();
 
 	// fireplace
 
@@ -130,6 +142,7 @@ void mouse( int button, int state, int x, int y )
 
 void update( void )
 {
+	fireParticleSystem->update();
 }
 
 //----------------------------------------------------------------------------
