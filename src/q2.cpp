@@ -128,10 +128,11 @@ keyboard( unsigned char key, int x, int y )
 }
 
 //----------------------------------------------------------------------------
-
+bool moveCamera = false;
 void mouse( int button, int state, int x, int y )
 {
     if ( state == GLUT_DOWN ) {
+		moveCamera = !moveCamera;
     }
 }
 
@@ -146,9 +147,11 @@ void update( void )
 	view = glm::rotate(view, glm::radians(cameraAngleOfRotation), glm::vec3(0.0f, 1.0f, 0.0f));
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
 
-	cameraAngleOfRotation += 0.2f;
-	if (cameraAngleOfRotation >= 360.0f)
-		cameraAngleOfRotation = 0.0f;
+	if (moveCamera) {
+		cameraAngleOfRotation += 0.2f;
+		if (cameraAngleOfRotation >= 360.0f)
+			cameraAngleOfRotation = 0.0f;
+	}
 }
 
 //----------------------------------------------------------------------------
