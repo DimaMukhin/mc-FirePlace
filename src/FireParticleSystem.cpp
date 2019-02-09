@@ -40,6 +40,7 @@ void FireParticleSystem::update()
 		if (currParticle->isDead()) {
 			particles->erase(particles->begin() + i);
 			particles->push_back(createNewParticle());
+			delete currParticle;
 		}
 	}
 }
