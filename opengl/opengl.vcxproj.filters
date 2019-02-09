@@ -27,12 +27,6 @@
     <ClInclude Include="..\src\common.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BlockMeshFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\FireParticle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,12 +45,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\q2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BlockMeshFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\FireParticle.cpp">

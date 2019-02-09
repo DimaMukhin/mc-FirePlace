@@ -12,12 +12,14 @@ FireParticleSystem::FireParticleSystem(int numOfParticles, GLuint modelUniformLo
 
 	particles = new std::vector<FireParticle*>();
 
+	// generate particles
 	for (int i = 0; i < numOfParticles; i++) {
 		FireParticle *newParticle = createNewParticle();
 		particles->push_back(newParticle);
 	}
 }
 
+// display all particles
 void FireParticleSystem::display()
 {
 	for (int i = 0; i < numOfParticles; i++) {
@@ -28,6 +30,7 @@ void FireParticleSystem::display()
 	}
 }
 
+// update all particles (not tied to fps)
 void FireParticleSystem::update()
 {
 	for (int i = 0; i < numOfParticles; i++) {
@@ -41,10 +44,12 @@ void FireParticleSystem::update()
 	}
 }
 
+// delete fire particle system
 FireParticleSystem::~FireParticleSystem()
 {
 }
 
+// create a new particle for the system
 FireParticle * FireParticleSystem::createNewParticle()
 {
 	FireParticle *newParticle = new FireParticle(modelUniformLocation, mcBlock, startLocation);
@@ -52,6 +57,7 @@ FireParticle * FireParticleSystem::createNewParticle()
 	return newParticle;
 }
 
+// get fire particle color based on distance using lerp
 glm::vec3 FireParticleSystem::getFireParticleColor(FireParticle * fp)
 {
 	glm::vec3 startColor = glm::vec3(1.0f, 0.3f, 0.0f);

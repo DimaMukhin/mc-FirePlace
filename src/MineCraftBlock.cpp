@@ -95,6 +95,7 @@ MineCraftBlock::MineCraftBlock(GLuint modelUniformLocation)
 	faceMesh = new Mesh2(vertices, colorIntensities, numOfVertices, indices, numOfIndices);
 }
 
+// display the block (use startModel as the starting matrix for model transformations)
 void MineCraftBlock::display(glm::mat4 startModel)
 {
 	glm::mat4 model;
@@ -135,16 +136,20 @@ void MineCraftBlock::display(glm::mat4 startModel)
 	faceMesh->display();
 }
 
+// display the model and use a unit matrix for model transformations
 void MineCraftBlock::display()
 {
 	display(glm::mat4());
 }
 
+// initialize the block
 void MineCraftBlock::init(GLuint positionAttribLocation, GLuint colorIntencityAttribLocation)
 {
 	faceMesh->init(positionAttribLocation, colorIntencityAttribLocation);
 }
 
+// delete the block
 MineCraftBlock::~MineCraftBlock()
 {
+	delete faceMesh;
 }

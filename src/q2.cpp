@@ -1,11 +1,13 @@
 // Based on: http://www.cs.unm.edu/~angel/BOOK/INTERACTIVE_COMPUTER_GRAPHICS/SIXTH_EDITION/CODE/CHAPTER03/WINDOWS_VERSIONS/example2.cpp
 // Modified to isolate the main program and use GLM
 
-// Display a color cube
-//
-// Colors are assigned to each vertex and then the rasterizer interpolates
-//   those colors across the triangles.  We us an orthographic projection
-//   as the default projetion.
+/*
+	Assignment 1
+	Question 2
+	Instructor: John Braico
+	Programed By: Dima Mukhin
+	Student #: 7773184
+*/
 
 #include "common.h"
 #include "Mesh2.h"
@@ -58,9 +60,11 @@ void init()
 	glm::vec4 defaultBaseColor = glm::vec4(0.1f, 0.4f, 0.1f, 1.0f);
 	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(defaultBaseColor));
 
+	// initializing minecraft block
 	mcBlock = new MineCraftBlock(modelUniformLocation);
 	mcBlock->init(vPosition, vColorIntensity);
 
+	// initializing fire particle system
 	fpSystem = new FireParticleSystem(100, modelUniformLocation, mcBlock, glm::vec3(0, 0, 0), vPosition, vColorIntensity, baseColorUniformLocation);
 
     glEnable( GL_DEPTH_TEST );
@@ -74,10 +78,10 @@ void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+	// displaying particle system
 	fpSystem->display();
 
-	// fireplace
-
+	// fireplace (logs)
 	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(glm::vec3(0.45f, 0.2f, 0.0f)));
 	for (GLfloat angle = 0.0f; angle < 360.0f; angle += 60.0f) {
 		glm::mat4 stickmodel;
@@ -94,7 +98,7 @@ void display( void )
 		mcBlock->display(stickmodel);
 	}
 
-	//// floor
+	// floor
 	glUniform4fv(baseColorUniformLocation, 1, glm::value_ptr(glm::vec3(0.1f, 0.4f, 0.0f)));
 	glm::mat4 floorModel;
 
@@ -140,6 +144,7 @@ void mouse( int button, int state, int x, int y )
 GLfloat cameraAngleOfRotation = 0.0f;
 void update( void )
 {
+	// update fire particle system
 	fpSystem->update();
 
 	// updating camera
@@ -147,6 +152,7 @@ void update( void )
 	view = glm::rotate(view, glm::radians(cameraAngleOfRotation), glm::vec3(0.0f, 1.0f, 0.0f));
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
 
+	// rotate the camera
 	if (moveCamera) {
 		cameraAngleOfRotation += 0.2f;
 		if (cameraAngleOfRotation >= 360.0f)

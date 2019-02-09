@@ -1,5 +1,6 @@
 #include "FireParticle.h"
 
+// generate random float number between two float values
 GLfloat FireParticle::randBetween(GLfloat hi, GLfloat low)
 {
 	return low + static_cast <GLfloat> (rand()) / (static_cast <GLfloat> (RAND_MAX / (hi - low)));
@@ -11,6 +12,7 @@ FireParticle::FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock,
 	this->mcBlock = mcBlock;
 	this->location = location;
 
+	// generate random particle values
 	velocity = randBetween(MIN_VELOCITY, MAX_VELOCITY);
 	rotationalVelocity = randBetween(MIN_ROTATIONAL_VELOCITY, MAX_ROTATIONAL_VELOCITY);
 	angle = 0.0f;
@@ -28,6 +30,7 @@ FireParticle::FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock,
 	ttl = randBetween(MIN_TTL, MAX_TTL);
 }
 
+// display the particle
 void FireParticle::display()
 {
 	glm::mat4 model;
@@ -40,11 +43,13 @@ void FireParticle::display()
 	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 }
 
+// initialize the particle
 void FireParticle::init(GLuint positionAttribLocation, GLuint colorIntensityAttribLocation)
 {
 	mcBlock->init(positionAttribLocation, colorIntensityAttribLocation);
 }
 
+// update particle state/values (note tied to fps)
 void FireParticle::update()
 {
 	// location
@@ -62,16 +67,19 @@ void FireParticle::update()
 		ttl = 0;
 }
 
+// return true if particle should be dead
 bool FireParticle::isDead()
 {
 	return ttl <= 0;
 }
 
+// get distance of the particle from some points 'startLocation'
 GLfloat FireParticle::getDistance(glm::vec3 startLocation)
 {
 	return glm::length(location - startLocation);
 }
 
+// delete the particle
 FireParticle::~FireParticle()
 {
 }
