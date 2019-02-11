@@ -61,9 +61,9 @@ FireParticle * FireParticleSystem::createNewParticle()
 // get fire particle color based on distance using lerp
 glm::vec3 FireParticleSystem::getFireParticleColor(FireParticle * fp)
 {
-	glm::vec3 startColor = glm::vec3(1.0f, 0.3f, 0.0f);
+	glm::vec3 startColor = glm::vec3(1.0f, 0.5f, 0.1f);
 	glm::vec3 endColor = glm::vec3(1.0f, 0.0f, 0.0f);
-	GLfloat endDistance = 2.0f;
+	GLfloat endDistance = 1.5f;
 
 	GLfloat fpDistance = fp->getDistance(startLocation);
 
