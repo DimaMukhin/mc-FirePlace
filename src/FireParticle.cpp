@@ -6,13 +6,19 @@ GLfloat FireParticle::randBetween(GLfloat hi, GLfloat low)
 	return low + static_cast <GLfloat> (rand()) / (static_cast <GLfloat> (RAND_MAX / (hi - low)));
 }
 
-FireParticle::FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock, glm::vec3 location)
+FireParticle::FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock, glm::vec3 startLocation)
 {
 	this->modelUniformLocation = modelUniformLocation;
 	this->mcBlock = mcBlock;
-	this->location = location;
+	this->startLocation = startLocation;
 
 	// generate random particle values
+	restart();
+}
+
+void FireParticle::restart()
+{
+	location = startLocation;
 	velocity = randBetween(MIN_VELOCITY, MAX_VELOCITY);
 	rotationalVelocity = randBetween(MIN_ROTATIONAL_VELOCITY, MAX_ROTATIONAL_VELOCITY);
 	angle = 0.0f;

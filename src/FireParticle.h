@@ -36,7 +36,9 @@ class FireParticle
 public:
 	static GLfloat randBetween(GLfloat hi, GLfloat low);
 
-	FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock, glm::vec3 location);
+	FireParticle(GLuint modelUniformLocation, MineCraftBlock *mcBlock, glm::vec3 startLocation);
+
+	void restart();
 
 	void display();
 
@@ -60,5 +62,6 @@ private:
 	GLfloat size;
 	GLfloat ttl;
 	glm::vec3 direction, axisOfRotation;
+	glm::vec3 startLocation;
 	glm::vec3 location;
 };
